@@ -86,7 +86,6 @@ public class WeeklyAssignmentController {
     }
 
     @GetMapping("/employee/{employeeId}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_SUPERVISOR')")
     public ResponseEntity<List<WeeklyAssignment>> getAssignmentsByEmployee(@PathVariable int employeeId) {
         List<WeeklyAssignment> assignments = weeklyAssignmentService.findByEmployeeId(employeeId);
         return ResponseEntity.ok(assignments);

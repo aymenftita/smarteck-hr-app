@@ -1,4 +1,4 @@
-package tn.smartech.smarteckhrapptasks.repositories;
+package tn.smartech.smarteckhrapptasks.repositories.TaskAssignment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

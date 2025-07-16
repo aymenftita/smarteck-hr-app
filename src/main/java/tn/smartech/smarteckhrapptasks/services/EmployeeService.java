@@ -9,7 +9,7 @@ import tn.smartech.smarteckhrapptasks.entities.Employee;
 import tn.smartech.smarteckhrapptasks.entities.RoleType;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.WeeklyScore;
 import tn.smartech.smarteckhrapptasks.repositories.EmployeeRepository;
-import tn.smartech.smarteckhrapptasks.repositories.WeeklyScoreRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyScoreRepository;
 
 
 

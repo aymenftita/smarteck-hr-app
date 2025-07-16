@@ -10,6 +10,9 @@ import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.TaskStatus;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.WeeklyAssignment;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.WeeklyScore;
 import tn.smartech.smarteckhrapptasks.repositories.*;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.TaskRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyAssignmentRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyScoreRepository;
 
 import java.util.List;
 

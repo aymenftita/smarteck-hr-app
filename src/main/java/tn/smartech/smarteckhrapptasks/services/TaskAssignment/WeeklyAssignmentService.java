@@ -7,8 +7,8 @@ import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.Task;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.TaskStatus;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.WeeklyAssignment;
 import tn.smartech.smarteckhrapptasks.repositories.EmployeeRepository;
-import tn.smartech.smarteckhrapptasks.repositories.TaskRepository;
-import tn.smartech.smarteckhrapptasks.repositories.WeeklyAssignmentRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.TaskRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyAssignmentRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class WeeklyAssignmentService {
         WeeklyAssignment assignment = weeklyAssignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new RuntimeException("Weekly assignment not found"));
 
-        int newTotalDays = assignment.getTotalWorkDaysOfWeek() + task.getDaysOfWork();
+        int newTotalDays = (int) (assignment.getTotalWorkDaysOfWeek() + task.getDaysOfWork());
         if (newTotalDays > 5) {
             throw new RuntimeException("Cannot add task: Exceeds 5-day limit");
         }
@@ -82,7 +82,7 @@ public class WeeklyAssignmentService {
                 });
 
         for (Task reportedTask : reportedTasks) {
-            int newTotalDays = nextAssignment.getTotalWorkDaysOfWeek() + reportedTask.getDaysOfWork();
+            int newTotalDays = (int) (nextAssignment.getTotalWorkDaysOfWeek() + reportedTask.getDaysOfWork());
             if (newTotalDays > 5) {
                 throw new RuntimeException("Cannot reassign task: Exceeds 5-day limit for next week");
             }
@@ -90,7 +90,7 @@ public class WeeklyAssignmentService {
             Task newTask = new Task(
                     reportedTask.getDescription(),
                     reportedTask.getEmployee(),
-                    reportedTask.getDaysOfWork(),
+                    (int) reportedTask.getDaysOfWork(),
                     TaskStatus.PENDING,
                     reportedTask.getAssignedBy()
             );

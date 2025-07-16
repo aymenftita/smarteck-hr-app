@@ -9,8 +9,8 @@ import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.Task;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.TaskStatus;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.WeeklyAssignment;
 import tn.smartech.smarteckhrapptasks.repositories.*;
-
-
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.TaskRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyAssignmentRepository;
 
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Weekly assignment not found"));
 
         // Validate 5-day limit
-        int newTotalDays = assignment.getTotalWorkDaysOfWeek() + task.getDaysOfWork();
+        int newTotalDays = (int) (assignment.getTotalWorkDaysOfWeek() + task.getDaysOfWork());
         if (newTotalDays > 5) {
             throw new RuntimeException("Cannot assign task: Exceeds 5-day limit");
         }

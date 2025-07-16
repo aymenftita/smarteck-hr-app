@@ -21,7 +21,7 @@ public class Task {
     private Employee employee;
 
     @Min(1)
-    private int daysOfWork;
+    private float daysOfWork;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
@@ -58,11 +58,11 @@ public class Task {
         this.employee = employee;
     }
 
-    public int getDaysOfWork() {
+    public float getDaysOfWork() {
         return daysOfWork;
     }
 
-    public void setDaysOfWork(int daysOfWork) {
+    public void setDaysOfWork(float daysOfWork) {
         this.daysOfWork = daysOfWork;
     }
 

@@ -9,6 +9,9 @@ import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.WeeklyScore;
 import tn.smartech.smarteckhrapptasks.repositories.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.TaskRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyAssignmentRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyScoreRepository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -62,7 +65,7 @@ public class TaskWeeklyAssignmentService {
 
             // Update total work days
             weeklyAssignment.setTotalWorkDaysOfWeek(
-                    weeklyAssignment.getTotalWorkDaysOfWeek() + task.getDaysOfWork());
+                    (int) (weeklyAssignment.getTotalWorkDaysOfWeek() + task.getDaysOfWork()));
         }
 
         // Save tasks and update weekly assignment
@@ -85,7 +88,7 @@ public class TaskWeeklyAssignmentService {
             task.setStatus(TaskStatus.PENDING);
 
             nextWeekAssignment.setTotalWorkDaysOfWeek(
-                    nextWeekAssignment.getTotalWorkDaysOfWeek() + task.getDaysOfWork());
+                    (int) (nextWeekAssignment.getTotalWorkDaysOfWeek() + task.getDaysOfWork()));
 
             taskRepository.save(task);
             weeklyAssignmentRepository.save(nextWeekAssignment);
@@ -111,8 +114,22 @@ public class TaskWeeklyAssignmentService {
         long completedTasks = tasks.stream()
                 .filter(t -> t.getStatus() == TaskStatus.COMPLETED)
                 .count();
+        long Task25 = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.STARTED_25)
+                .count();
+        long Task50 = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.STARTED_50)
+                .count();
+        long Task75 = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.STARTED_75)
+                .count();
+
 
         double score = (completedTasks * 100.0) / tasks.size();
+
+        score += (Task25 * 25.0) / tasks.size();
+        score += (Task50 * 50.0) / tasks.size();
+        score += (Task75 * 75.0) / tasks.size();
 
         // Save or update the score
         WeeklyScore weeklyScore = weeklyScoreRepository.findByOperatorAndWeek(operator, week)

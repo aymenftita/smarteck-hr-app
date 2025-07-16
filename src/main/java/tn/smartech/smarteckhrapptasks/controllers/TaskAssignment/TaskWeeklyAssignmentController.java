@@ -9,9 +9,9 @@ import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.TaskStatus;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.WeeklyAssignment;
 import tn.smartech.smarteckhrapptasks.entities.TaskAssignment.WeeklyScore;
 import tn.smartech.smarteckhrapptasks.repositories.EmployeeRepository;
-import tn.smartech.smarteckhrapptasks.repositories.TaskRepository;
-import tn.smartech.smarteckhrapptasks.repositories.WeeklyAssignmentRepository;
-import tn.smartech.smarteckhrapptasks.repositories.WeeklyScoreRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.TaskRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyAssignmentRepository;
+import tn.smartech.smarteckhrapptasks.repositories.TaskAssignment.WeeklyScoreRepository;
 import tn.smartech.smarteckhrapptasks.services.TaskAssignment.TaskWeeklyAssignmentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,8 +95,8 @@ public class TaskWeeklyAssignmentController {
                 });
 
         // Calculate total requested work days
-        int totalRequestedDays = tasks.stream()
-                .mapToInt(Task::getDaysOfWork)
+        float totalRequestedDays = (int) tasks.stream()
+                .mapToDouble(Task::getDaysOfWork)
                 .sum();
 
         // Check if adding these tasks would exceed the 5-day limit
@@ -169,8 +169,24 @@ public class TaskWeeklyAssignmentController {
         long completedTasks = tasks.stream()
                 .filter(t -> t.getStatus() == TaskStatus.COMPLETED)
                 .count();
+        long Task25 = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.STARTED_25)
+                .count();
+        long Task50 = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.STARTED_50)
+                .count();
+        long Task75 = tasks.stream()
+                .filter(t -> t.getStatus() == TaskStatus.STARTED_75)
+                .count();
 
-        double score = (completedTasks * 100.0) / tasks.size();
+
+        double score = completedTasks * 100.0;
+
+        score += Task25 * 25.0;
+        score += Task50 * 50.0;
+        score += Task75 * 75.0;
+
+        score = score / tasks.size();
 
         // Save or update the score
         WeeklyScore weeklyScore = weeklyScoreRepository.findByOperatorAndWeek(operator, week)
@@ -298,7 +314,7 @@ public class TaskWeeklyAssignmentController {
         Task savedTask = taskRepository.save(newTask);
 
         // 8. Update weekly assignment
-        weeklyAssignment.setTotalWorkDaysOfWeek(weeklyAssignment.getTotalWorkDaysOfWeek() + newTask.getDaysOfWork());
+        weeklyAssignment.setTotalWorkDaysOfWeek((int) (weeklyAssignment.getTotalWorkDaysOfWeek() + newTask.getDaysOfWork()));
         weeklyAssignment.getTasks().add(savedTask);
         weeklyAssignmentRepository.save(weeklyAssignment);
 
