@@ -30,6 +30,8 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
+    private String photo;
+
     @OneToMany(mappedBy = "employee")
     @JsonIgnore
     private List<Task> tasks = new ArrayList<>();
@@ -42,14 +44,16 @@ public class Employee {
     @JsonIgnore
     private List<Response> responses;
 
-    public Employee(int id, String name, String email, String password, RoleType role, List<Task> tasks, List<WeeklyScore> scores) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.tasks = tasks;
+    public Employee(List<Response> responses, List<WeeklyScore> scores, List<Task> tasks, String photo, RoleType role, String password, String email, String name, int id) {
+        this.responses = responses;
         this.scores = scores;
+        this.tasks = tasks;
+        this.photo = photo;
+        this.role = role;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.id = id;
     }
 
     public Employee() {
@@ -109,5 +113,21 @@ public class Employee {
 
     public void setScores(List<WeeklyScore> scores) {
         this.scores = scores;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public List<Response> getResponses() {
+        return responses;
+    }
+
+    public void setResponses(List<Response> responses) {
+        this.responses = responses;
     }
 }

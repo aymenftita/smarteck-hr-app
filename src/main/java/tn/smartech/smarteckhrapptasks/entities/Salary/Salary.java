@@ -16,6 +16,8 @@ public class Salary {
     @OneToOne
     private Employee employee;
 
+    private Double salary;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -33,4 +35,11 @@ public class Salary {
         this.employee = employee;
     }
 
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
 }
